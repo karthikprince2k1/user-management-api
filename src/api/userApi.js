@@ -16,7 +16,7 @@ const createUserEndpoints = (app, db) => {
   });
 
   app.get("/users/:userId", (req, res, next) => {
-    const sql = "select * from user where id = ?";
+    const sql = "select * from user where user_id = ?";
     const params = [req.params.userId];
     db.get(sql, params, (err, row) => {
       if (err) {

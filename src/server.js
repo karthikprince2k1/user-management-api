@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 const db = require("./db.js");
+const cors = require("cors");
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 const createUserEndpoints = require("./api/userApi");
 const createContactEndpoints = require("./api/contactApi");
