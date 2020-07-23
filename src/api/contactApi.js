@@ -70,6 +70,7 @@ const createContactEndpoints = (app, db) => {
   });
 
   app.post("/users/:userId/contacts", (req, res, next) => {
+    console.log("Got POST", req.body);
     const errors = validateContactRequest(req);
     if (errors.length) {
       res.status(400).json({ error: errors.join(",") });
@@ -127,6 +128,22 @@ const createContactEndpoints = (app, db) => {
         res.json({ message: "deleted", changes: this.changes });
       }
     );
+  });
+
+  app.get("/contacts/:type/:contactNum", (req, res, next) => {
+    const sql = `select u.* from user u, user_contacts uc, contact c 
+    where c.contact_id = uc.contact_id and uc.user_id = u.user_id and c.type=? and c.contact = ?`;
+    const params = [req.params.type, req.params.contactNum];
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: rows,
+      });
+    });
   });
 };
 
